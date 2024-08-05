@@ -1,0 +1,22 @@
+# Ignore virtual environment
+.venv/
+
+# Ignore compiled Python files
+*.pyc
+__pycache__/
+.pytest_cache/
+
+
+# Ignore static files (if collected locally)
+/staticfiles/
+/static/
+
+# Ignore media files (if uploaded locally)
+/media/
+
+# Ignore IDE/Editor files
+*.idea/
+.vscode/
+
+# Ignore .env files
+.env

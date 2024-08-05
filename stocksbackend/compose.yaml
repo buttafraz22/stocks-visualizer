@@ -1,0 +1,73 @@
+version: '3.3'
+services:
+  db:
+    image: postgres:16.3-bullseye
+    container_name: db
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - postgres_db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PWD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    ports:
+      - '5437:5432'
+  
+  backend:
+    build: .
+    container_name: backend
+    command: sh -c "make run"
+    restart: always
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - cache
+
+  cache:
+    image: redis:latest
+    restart: always
+    container_name: cache
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning 
+    # environment:
+    #   REDIS_ARGS: "--requirepass password --user username on >password ~* allcommands --user default off nopass nocommands"
+    volumes: 
+      - cache:/data
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      interval: 1s
+      timeout: 3s
+      retries: 5
+  
+  celery:
+    build: .
+    command: sh -c "make celery-worker"
+    volumes:
+      - .:/app
+    depends_on:
+      - cache
+      - backend
+      - db
+
+  celery-beat:
+    build: .
+    command: sh -c "make celery-beat"
+    volumes:
+      - .:/app
+    depends_on:
+      - cache
+      - backend
+      - db
+volumes:
+  cache:
+    driver: local
+  postgres_db:
+    driver: local
