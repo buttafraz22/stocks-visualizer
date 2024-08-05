@@ -25,7 +25,7 @@ Three processes are essential for this project to run. Make sure you have them i
 1. Navigate to the location of your choice on your PC and download the Git repository by following command:
 
 ``````bash
-https://gitlab.arbisoft.com/buttafrazintern/stocks-visualizer
+https://github.com/buttafraz22/stocks-visualizer
 ``````
 
 ​	This will install the git repository in your current working directory.
