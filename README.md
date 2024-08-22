@@ -1,6 +1,6 @@
 # stocks-visualizer
 
-This is a basic project repository set up by me during my training project at Arbisoft in Summer 2024.
+This is a basic project repository set up by me for my Ambassador AI project.
 
 ## Setup Pre-requirements
 
